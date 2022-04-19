@@ -6,7 +6,10 @@ export default (posts = [], action) => {
         case 'FETCH_ALL':
             return action.payload;
         case 'CREATE':
-            return posts;
+            //we have to sprea all the posts that we have
+            /*and the new post. that new post is stored in the
+            action.payload*/
+            return [...posts, action.payload];
         default:
             return posts;
     }
