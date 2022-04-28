@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import PostMessage from '../models/postMessage.js';
 
 export const getPosts = async (req,res) => {
@@ -18,4 +20,18 @@ export const createPost = async (req, res) => {
     } catch (error) {
         res.status(409).json({ message: error.message});
     }
+}
+
+export const updatePost = async (req, res) => {
+    //once we make a request (/posts/123 something like that) '123' is going to fill the value of id 
+    const { id: _id } = req.params;
+
+    const post = req.body;
+    //we're receiving whole updated post (data) that is going to be sent from the frontend
+
+    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No post with that id');
+
+    const updatePost = await PostMessage.findByIdAndUpdate(_id, {...post, _id}, { new:true });
+
+    res.json(updatePost);
 }
