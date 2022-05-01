@@ -3,6 +3,9 @@
 //posts are going to be an array and that's why we're specifying this empty array there
 export default (posts = [], action) => {
     switch (action.type) {
+        case 'DELETE':
+            return posts.filter((post) => post._id !== action.payload);
+            //return all the posts but filter out the one that we deleted
         case 'UPDATE':
             //action.payload is the new updated post
             return posts.map((post) => post._id === action.payload._id ? action.payload : post);
