@@ -29,9 +29,19 @@ export const updatePost = async (req, res) => {
     const post = req.body;
     //we're receiving whole updated post (data) that is going to be sent from the frontend
 
-    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No post with that id');
+    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No post with that id.');
 
     const updatePost = await PostMessage.findByIdAndUpdate(_id, {...post, _id}, { new:true });
 
     res.json(updatePost);
+}
+
+export const deletePost = async (req, res) => {
+    const { id } = req.params;
+
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No post with that id.');
+
+    await PostMessage.findByIdAndDelete(id);
+
+    res.json({message: 'Post deleted successfully.'});
 }
