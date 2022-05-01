@@ -3,6 +3,9 @@
 //posts are going to be an array and that's why we're specifying this empty array there
 export default (posts = [], action) => {
     switch (action.type) {
+        case 'UPDATE':
+            //action.payload is the new updated post
+            return posts.map((post) => post._id === action.payload._id ? action.payload : post);
         case 'FETCH_ALL':
             return action.payload;
         case 'CREATE':

@@ -6,11 +6,14 @@ import Post from "./Post/Post";
 
 import useStyles from './styles';
 
-const Posts = () => {
+const Posts = ({ setCurrentId }) => {
+    /*
+    Accept the setCurrentId as prop and send it to the Post component.
+    We're basically continuing sending the same prop over and over again to the most child component.
+    And this is called as "props drilling".
+    */
     const posts = useSelector((state) => state.posts);
     const classes = useStyles();
-
-    console.log(posts);
     
     return(
         //if there is no post that length than return loading sphere
@@ -19,7 +22,7 @@ const Posts = () => {
             <Grid className={classes.container} container alignItems="stretch" spacing={3}>
                 {posts.map((post) => (
                     <Grid key={post._id} item xs={12} sm={6}>
-                        <Post post={post} />
+                        <Post post={post} setCurrentId={setCurrentId}/>
                     </Grid>
                 ))}
             </Grid>
