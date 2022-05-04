@@ -7,7 +7,8 @@ export default (posts = [], action) => {
             return posts.filter((post) => post._id !== action.payload);
             //return all the posts but filter out the one that we deleted
         case 'UPDATE':
-            //action.payload is the new updated post
+        case 'LİKE':
+            //action.payload is the new updated post and liked post
             return posts.map((post) => post._id === action.payload._id ? action.payload : post);
         case 'FETCH_ALL':
             return action.payload;
