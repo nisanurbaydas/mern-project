@@ -9,22 +9,37 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Input from './Input';
 import Icon from './icon';
 import useStyles from './styles';
+import { signin, signup } from '../../actions/auth';
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword:''};
 
 const Auth = () => {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] =useState(false);
+    const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleShowPassword = () => setShowPassword((prevShowPassword) => ! prevShowPassword);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        /*The browser's default behavior is refreshing on form submit
+        so we have to add that. That's something that we always add on the form submit in react
+        Cause there we don't prefer reloads. We always want to have something on the screen.
+        */
+        //console.log(formData);
 
+        if(isSignup) {
+            dispatch(signup(formData, navigate))
+        } else {
+            dispatch(signin(formData, navigate))
+        }
     };
 
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const switchMode = () => {
@@ -59,7 +74,7 @@ const Auth = () => {
                 <Typography variant="h5">{ isSignup ? 'Sign Up' : 'Sign In'}</Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        {/*we only have the first name and the last name if we're signing up. If we're already sign in we don't need that. */}
+                        {/*we only have the first name and the last name if we're signin up. If we're already sign in we don't need that. */}
                         {
                             isSignup && (
                                 <>
