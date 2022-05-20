@@ -48,11 +48,28 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
     const { id } = req.params;
+
+    if(!req.userId) return res.json({ message: 'Unauthenticated' });
+    //first of all we have to see if a user is even authenticated
+
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No post with that id');
 
     const post = await PostMessage.findById(id);
 
-    const updatedPost = await PostMessage.findByIdAndUpdate(id, { likeCount: post.likeCount + 1 }, { new: true });
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+    /* So each like is going to be the id from a spesific person. that's how we're going to know who liked the spesific post.
+    */
+    if(index === -1){ //only if user's id is not in there only then is this going to be equal to -1. So this is if user wants to like post
+        post.likes.push(req.userId);
+    } else {
+        post.likes = post.likes.filter((id) => id !== String(req.userId));
+    }
 
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+    /*now we're not going update only the likes or the like count we don't have that anymore.
+    we're simply going to create a new post. so the post that we had we're going to update it
+    because now we have the same old post that now includes the like itself
+    */
+   
     res.json(updatePost);
 }
