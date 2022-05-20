@@ -7,7 +7,7 @@ export const signin = async(req, res) => {
     const { email, password } = req.body;
 
     try{
-        const existingUser = await User.findOne({email});
+        const existingUser = await User.findOne({ email });
         //that means we're searching for the existing user in the db
         if(!existingUser) return res.status(404).json({ message: "User doesn't exist." })
 
@@ -20,6 +20,8 @@ export const signin = async(req, res) => {
         /*if the user already exists in the db and the password is correct 
           then we can finally get users jwt that we need to the send to the frontend
         */
+
+        res.status(200).json({ result: existingUser, token });
     } catch(error) {
         res.status(500).json({ message: "Something went wrong."});
     }

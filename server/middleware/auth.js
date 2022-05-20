@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
             decodedData = jwt.verify(token, 'test');
             //this going to give us the data from each spesific token it's going to give us the username of the person and its id
 
-            req.userId = decodedData?.indexOf;
+            req.userId = decodedData?.id;
         } else { // If we're working with the google oauth
             decodedData = jwt.decode(token);
             req.userId = decodedData?.sub;

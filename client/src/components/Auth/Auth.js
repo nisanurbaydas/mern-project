@@ -10,6 +10,7 @@ import Input from './Input';
 import Icon from './icon';
 import useStyles from './styles';
 import { signin, signup } from '../../actions/auth';
+import { AUTH } from '../../constants/actionTypes';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword:''};
 
@@ -44,7 +45,7 @@ const Auth = () => {
 
     const switchMode = () => {
         setIsSignup((prevIsSignup) => !prevIsSignup);
-        handleShowPassword(false);
+        setShowPassword(false);
     };
 
     const googleSuccess = async (res) => {
@@ -52,7 +53,7 @@ const Auth = () => {
         const token = res?.tokenId;
 
         try {
-            dispatch({ type: 'AUTH', data: { result, token }});
+            dispatch({ type: AUTH, data: { result, token }});
 
             //that way, once we dispatch this we can redirect back to the home
             navigate.push('/');
@@ -102,7 +103,7 @@ const Auth = () => {
                         cookiePolicy={'single_host_origin'}
                         prompt='consent'
                     />
-                    <Grid container justify="flex-end">
+                    <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Button onClick={switchMode}>
                                 { isSignup ? 'Already have an account ? Sign In' : "Don't have an account ? Sign Up"} 
