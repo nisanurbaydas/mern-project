@@ -72,5 +72,5 @@ export const likePost = async (req, res) => {
     because now we have the same old post that now includes the like itself
     */
    
-    res.json(updatePost);
+    res.status(200).json(updatedPost);
 }
